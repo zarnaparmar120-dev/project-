@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login - PawCare</title>
+    <link rel="stylesheet" href="doctor-style.css">
+    <!-- Font Awesome for brand-consistent icons -->
+    <link rel="stylesheet" href="doc.css">
+</head>
+<body>
+
+    <!-- Header Navigation [Source 1] -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-paw"></i> PawCare
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#" class="active">Doctor Portal</a>
+        </nav>
+    </header>
+
+    <main class="login-section">
+        <div class="login-container">
+            <!-- Decorative brand circles [Source 1] -->
+            <div class="circle circle-green"></div>
+            <div class="circle circle-peach"></div>
+            
+            <div class="login-card">
+                <!-- Stethoscope icon representing the service [Source 2] -->
+                <div class="icon-header">
+                    <i class="fa-solid fa-stethoscope"></i>
+                </div>
+                <h2>Doctor Portal</h2>
+                <p>Please enter your professional credentials to access your patient dashboard and consultations.</p>
+                
+                <form>
+                    <div class="input-group">
+                        <label for="doctor-id">Doctor ID / License Number</label>
+                        <input type="text" id="doctor-id" placeholder="e.g. VET-12345" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox"> Stay logged in
+                        </label>
+                        <a href="#" class="forgot-pass">Forgot password?</a>
+                    </div>
+                    
+                    <!-- Button color matching the "Book Appointment" button [Source 5] -->
+                    <button type="submit" class="btn-doctor-login">Enter Dashboard</button>
+                </form>
+                
+                <div class="support-link">
+                    <p>Register your Account <a href="doc registration.html"> Register</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer [Source 14] -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col about-col">
+                <div class="logo white"><i class="fa-solid fa-paw"></i> PawCare</div>
+                <p>Your trusted partner in pet health and happiness. Providing comprehensive care for your beloved companions.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Doctor Links</h4>
+                <ul>
+                    <li><a href="#">Doctor Manual</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Staff Portal</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Consultations</a></li>
+                    <li><a href="#">Symptom Database</a></li>
+                    <li><a href="#">Pharmacy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p><i class="fa-solid fa-envelope"></i> admin@pawcare.com</p>
+                <p><i class="fa-solid fa-phone"></i> 1-800-VET-ONLY</p>
+                <p><i class="fa-solid fa-location-dot"></i> 123 Pet Street, CA 90210</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

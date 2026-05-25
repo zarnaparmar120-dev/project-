@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PawCare</title>
+    <link rel="stylesheet" href="login-style.css">
+    <!-- Font Awesome for icons consistent with the sources -->
+    <link rel="stylesheet" href="logincss.css">
+</head>
+<body>
+
+    <!-- Header Navigation as seen in Source [1] -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-paw"></i> PawCare
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#" class="active">Login</a>
+            <a href="signup page.html" class="btn-signup">Sign Up</a>
+        </nav>
+    </header>
+
+    <main class="login-section">
+        <div class="login-container">
+            <!-- Decorative circles similar to Hero image in Source [1] -->
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            
+            <div class="login-card">
+                <h2>Welcome Back</h2>
+                <p>Login to access your pet's health records and services.</p>
+                
+                <form>
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#" class="forgot-pass">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn-login"><a href="index.html"></a>login</button>
+                </form>
+                
+                
+                <p class="signup-link">Don't have an account? <a href="signup page.html">Sign up now</a></p>
+                <p class="signup-link">Login as doctor <a href="doclogin.html">login</a></p>
+                <p class="signup-link">Login as Shopkeeper <a href="shopkeeper login.html">login</a></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer as seen in Source [4] -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col about-col">
+                <div class="logo white"><i class="fa-solid fa-paw"></i> PawCare</div>
+                <p>Your trusted partner in pet health and happiness. Providing comprehensive care for your beloved companions.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Services</a></li>
+                    <li><a href="#">Emergency Care</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Symptom Checker</a></li>
+                    <li><a href="#">Consultations</a></li>
+                    <li><a href="#">Pet Grooming</a></li>
+                    <li><a href="#">Pet Shopping</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p><i class="fa-solid fa-envelope"></i> hello@pawcare.com</p>
+                <p><i class="fa-solid fa-phone"></i> 1-800-PET-CARE</p>
+                <p><i class="fa-solid fa-location-dot"></i> 123 Pet Street, CA 90210</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

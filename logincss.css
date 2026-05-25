@@ -1,0 +1,282 @@
+/* Color variables derived from the brand palette in the sources */
+:root {
+    --bg-cream: #f9f9f5;
+    --text-brown: #4a3c31;
+    --primary-orange: #d9a88f; /* Used in Check Pet Symptoms button [1] */
+    --secondary-green: #97b9a5; /* Used in Clinic status and Doc Book button [3, 5] */
+    --soft-pink: #f0b4b4; /* Used in Emergency button [1] */
+    --soft-yellow: #f5d491;
+    --white: #ffffff;
+    --input-bg: #fdfdfb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-cream);
+    color: var(--text-brown);
+}
+
+/* Header Styles [Source 1] */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%;
+    background-color: var(--white);
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-orange);
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-brown);
+    margin-left: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+nav a.active {
+    color: var(--primary-orange);
+    font-weight: bold;
+}
+
+.btn-signup {
+    background-color: var(--primary-orange);
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 20px;
+}
+
+/* Login Section */
+.login-section {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    z-index: 5;
+}
+
+/* Rounded card style similar to Symptom Checker [Source 4] */
+.login-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.login-card h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.login-card p {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+
+/* Form Styling */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    background-color: var(--input-bg);
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-orange);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    margin-bottom: 25px;
+}
+
+.forgot-pass {
+    color: var(--primary-orange);
+    text-decoration: none;
+}
+
+.btn-login {
+    width: 100%;
+    background-color: var(--primary-orange); /* Matching color from Source [1] */
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(217, 168, 143, 0.3);
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #c9977e;
+    transform: translateY(-2px);
+}
+
+/* Decorative Background Elements [Similar to Source 1] */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.circle-1 {
+    width: 150px;
+    height: 150px;
+    background: var(--soft-yellow);
+    top: -50px;
+    left: -80px;
+}
+
+.circle-2 {
+    width: 100px;
+    height: 100px;
+    background: var(--secondary-green);
+    bottom: -30px;
+    right: -50px;
+}
+
+/* Social and Links */
+.social-login {
+    margin-top: 30px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid #eee;
+    background: white;
+    cursor: pointer;
+    color: var(--text-brown);
+    transition: 0.3s;
+}
+
+.social-btn:hover {
+    background-color: #f9f9f9;
+}
+
+.signup-link {
+    margin-top: 25px;
+}
+
+.signup-link a {
+    color: var(--primary-orange);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Footer Styles [Source 14] */
+footer {
+    background: var(--text-brown);
+    color: white;
+    padding: 60px 10%;
+    margin-top: 50px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+}
+
+.footer-col h4 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.logo.white {
+    color: white;
+    margin-bottom: 15px;
+}
+
+.about-col p {
+    color: #ccc;
+    max-width: 300px;
+    font-size: 0.9rem;
+}
+.back-btn-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-btn {
+    padding: 12px 25px;
+    background-color: var(--primary-orange);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(217, 168, 143, 0.3);
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #c9977e;
+    transform: translateY(-2px);
+}

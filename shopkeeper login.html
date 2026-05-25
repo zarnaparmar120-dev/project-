@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopkeeper Login - PawCare</title>
+    <link rel="stylesheet" href="shopkeeper-style.css">
+    <!-- Font Awesome for brand icons -->
+    <link rel="stylesheet" href="shopkeeper.css">
+</head>
+<body>
+
+    <!-- Header Navigation [Source 2] -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-paw"></i> PawCare
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#" class="active">Shopkeeper Portal</a>
+        </nav>
+    </header>
+
+    <main class="login-section">
+        <div class="login-container">
+            <!-- Decorative brand circles [Source 2] -->
+            <div class="circle circle-peach"></div>
+            <div class="circle circle-yellow"></div>
+            
+            <div class="login-card">
+                <!-- Shopping bag icon representing the Shopkeeper service [Source 3, 10] -->
+                <div class="icon-header">
+                    <i class="fa-solid fa-shop"></i>
+                </div>
+                <h2>Shopkeeper Portal</h2>
+                <p>Enter your shop credentials to manage inventory, view orders, and update your pet product listings.</p>
+                
+                <form>
+                    <div class="input-group">
+                        <label for="shop-id">Shop Email / ID</label>
+                        <input type="text" id="shop-id" placeholder="e.g. shop_01@pawcare.com" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox"> Stay logged in
+                        </label>
+                        <a href="#" class="forgot-pass">Forgot Password?</a>
+                    </div>
+                    
+                    <!-- Button color matching the Shopping section theme [Source 10] -->
+                    <button type="submit" class="btn-shop-login">Access Shop Dashboard</button>
+                </form>
+                
+                <div class="support-link">
+                    <p>New Vendor? <a href="shopkeeper registration.html">Apply for a Shop Account</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dark Footer [Source 1, 15] -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col about-col">
+                <div class="logo white"><i class="fa-solid fa-paw"></i> PawCare</div>
+                <p>Your trusted partner in pet health and happiness. Providing comprehensive care for your beloved companions.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Vendor Links</h4>
+                <ul>
+                    <li><a href="#">Merchant Policy</a></li>
+                    <li><a href="#">Shipping Guide</a></li>
+                    <li><a href="#">Seller Support</a></li>
+                    <li><a href="#">Payout Info</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Pet Shopping</a></li>
+                    <li><a href="#">Product Ads</a></li>
+                    <li><a href="#">Inventory Tool</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p><i class="fa-solid fa-envelope"></i> vendors@pawcare.com</p>
+                <p><i class="fa-solid fa-phone"></i> 1-800-SHOP-OWN</p>
+                <p><i class="fa-solid fa-location-dot"></i> 123 Pet Street, CA 90210</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

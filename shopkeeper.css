@@ -1,0 +1,244 @@
+/* Color Palette from Sources 2, 10, 15 */
+:root {
+    --bg-cream: #f9f9f5;
+    --text-brown: #4a3c31;
+    --primary-peach: #d9a88f; /* Shopping brand color [Source 10] */
+    --soft-yellow: #f5d491;
+    --white: #ffffff;
+    --footer-bg: #4a3c31;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-cream); /* Cream background [Source 2] */
+    color: var(--text-brown);
+    line-height: 1.6;
+}
+
+/* Header/Navigation Styles [Source 2] */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background-color: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-brown);
+}
+
+header .logo i {
+    color: var(--primary-peach);
+    margin-right: 8px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-brown);
+    margin-left: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+nav a.active {
+    color: var(--primary-peach);
+    font-weight: bold;
+}
+
+/* Login Layout */
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    min-height: 75vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative background elements [Source 2] */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.circle-peach { width: 200px; height: 200px; background: var(--primary-peach); top: -100px; left: -100px; }
+.circle-yellow { width: 150px; height: 150px; background: var(--soft-yellow); bottom: -50px; right: -20px; }
+
+.login-container {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 5;
+}
+
+/* Rounded Login Card [Source 1, 4] */
+.login-card {
+    background: var(--white);
+    padding: 50px;
+    border-radius: 35px; /* Highly rounded as seen in Source 4 */
+    box-shadow: 0 15px 50px rgba(0,0,0,0.04);
+    text-align: center;
+}
+
+.icon-header {
+    width: 70px;
+    height: 70px;
+    background-color: var(--primary-peach);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 20px;
+}
+
+.login-card h2 {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+    color: var(--text-brown);
+}
+
+.login-card p {
+    color: #888;
+    margin-bottom: 35px;
+    font-size: 0.95rem;
+}
+
+/* Input Fields */
+.input-group {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-brown);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1px solid #eeeeee;
+    background-color: #fafafa;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-peach);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    margin-bottom: 30px;
+}
+
+.form-options a {
+    color: var(--primary-peach);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Primary Pill-Shaped Button [Source 5, 10] */
+.btn-shop-login {
+    width: 100%;
+    background-color: var(--primary-peach);
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 50px; /* Pill shape matches Source 5 */
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(217, 168, 143, 0.3);
+}
+
+.btn-shop-login:hover {
+    background-color: #c9977e;
+    transform: translateY(-2px);
+}
+
+.support-link {
+    margin-top: 30px;
+    font-size: 0.9rem;
+}
+
+.support-link a {
+    color: var(--primary-peach);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Footer [Source 1, 15] */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--white);
+    padding: 80px 10%;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 40px;
+}
+
+.footer-col h4 {
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    color: var(--white);
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.footer-col ul li a:hover {
+    color: var(--white);
+}
+
+.about-col p {
+    font-size: 0.9rem;
+    color: #cccccc;
+    margin-top: 15px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .login-card { padding: 40px 20px; }
+}

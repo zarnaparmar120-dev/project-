@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration - PawCare</title>
+    <link rel="stylesheet" href="doctor-reg-style.css">
+    <!-- Font Awesome for brand-consistent icons [1, 3] -->
+    <link rel="stylesheet" href="doc registration.css">
+</head>
+<body>
+
+    <!-- Header Navigation [1, 4] -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-paw"></i> PawCare
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="doclogin.html">Login</a>
+        </nav>
+    </header>
+
+    <main class="registration-section">
+        <!-- Decorative brand circles [1, 4] -->
+        <div class="circle circle-green"></div>
+        <div class="circle circle-peach"></div>
+
+        <div class="reg-container">
+            <div class="reg-card">
+                <div class="icon-header">
+                    <i class="fa-solid fa-user-doctor"></i>
+                </div>
+                <h2>Join Our Medical Team</h2>
+                <p>Register as a certified veterinarian to provide expert care to pets in our community.</p>
+                
+                <form>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" id="fullname" placeholder="Dr. Sarah Johnson" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="license">License Number</label>
+                            <input type="text" id="license" placeholder="e.g. VET-12345" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="specialty">Specialization</label>
+                            <select id="specialty">
+                                <option value="general">General Veterinarian</option>
+                                <option value="exotic">Exotic Pet Specialist</option>
+                                <option value="surgery">Surgery Specialist</option>
+                                <option value="behavior">Behavioral Specialist</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="experience">Years of Experience</label>
+                            <input type="number" id="experience" placeholder="e.g. 10" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Professional Email</label>
+                        <input type="email" id="email" placeholder="sarah.j@pawcare.com" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    
+                    <div class="terms-box">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I certify that I am a licensed professional and agree to the <a href="#">Medical Practitioner Terms</a>.</label>
+                    </div>
+                    
+                    <!-- Pill-shaped button in sage green [2, 5] -->
+                    <button type="submit" class="btn-reg">Complete Registration</button>
+                </form>
+                
+                <p class="login-prompt">Already a member? <a href="doclogin.html">Login to Portal</a></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dark Footer [1, 6] -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col about-col">
+                <div class="logo white"><i class="fa-solid fa-paw"></i> PawCare</div>
+                <p>Providing comprehensive, accessible, and compassionate care for all pets [7].</p>
+            </div>
+            <div class="footer-col">
+                <h4>Medical Portal</h4>
+                <ul>
+                    <li><a href="#">Practitioner Guidelines</a></li>
+                    <li><a href="#">Compliance</a></li>
+                    <li><a href="#">Doctor Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Admin</h4>
+                <p><i class="fa-solid fa-envelope"></i> medical.admin@pawcare.com</p>
+                <p><i class="fa-solid fa-phone"></i> 1-800-VET-ONLY</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopkeeper Registration - PawCare</title>
+    <link rel="stylesheet" href="shop-reg-style.css">
+    <!-- Font Awesome for brand-consistent icons -->
+    <link rel="stylesheet" href="shopkeeper registration.css">
+</head>
+<body>
+
+    <!-- Header Navigation [Source 2] -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-paw"></i> PawCare
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login page.html">Login</a>
+        </nav>
+    </header>
+
+    <main class="registration-section">
+        <!-- Decorative brand circles [Source 2] -->
+        <div class="circle circle-peach"></div>
+        <div class="circle circle-yellow"></div>
+
+        <div class="reg-container">
+            <div class="reg-card">
+                <div class="icon-header">
+                    <i class="fa-solid fa-shop"></i>
+                </div>
+                <h2>Vendor Registration</h2>
+                <p>Register your business to start selling premium pet products on the PawCare marketplace.</p>
+                
+                <form>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="shopname">Shop Name</label>
+                            <input type="text" id="shopname" placeholder="e.g. Happy Paws Supplies" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="ownername">Owner Full Name</label>
+                            <input type="text" id="ownername" placeholder="John Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="category">Business Category</label>
+                            <select id="category">
+                                <option value="food">Pet Food & Treats</option>
+                                <option value="toys">Toys & Play</option>
+                                <option value="accessories">Accessories & Gear</option>
+                                <option value="health">Health & Wellness</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="business-id">Tax ID / Business License</label>
+                            <input type="text" id="business-id" placeholder="e.g. TAX-98765" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="address">Store/Warehouse Address</label>
+                        <input type="text" id="address" placeholder="123 Commerce St, Suite 4" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="email">Business Email</label>
+                            <input type="email" id="email" placeholder="contact@shopname.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="phone">Contact Number</label>
+                            <input type="tel" id="phone" placeholder="+1 (555) 000-0000" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    
+                    <div class="terms-box">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the <a href="#">Merchant Agreement</a> and <a href="#">Seller Policy</a>.</label>
+                    </div>
+                    
+                    <!-- Primary pill-shaped button in brand peach [Source 5, 10] -->
+                    <button type="submit" class="btn-reg">Create Vendor Account</button>
+                </form>
+                
+                <p class="login-prompt">Already a vendor? <a href="shopkeeper login.html">Login to Portal</a></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dark Footer [Source 1, 15] -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col about-col">
+                <div class="logo white"><i class="fa-solid fa-paw"></i> PawCare</div>
+                <p>Your trusted partner in pet health and happiness. Providing comprehensive care for your beloved companions.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Vendor Services</h4>
+                <ul>
+                    <li><a href="#">Marketplace Guide</a></li>
+                    <li><a href="#">Merchant Support</a></li>
+                    <li><a href="#">Shipping Partners</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p><i class="fa-solid fa-envelope"></i> vendors@pawcare.com</p>
+                <p><i class="fa-solid fa-phone"></i> 1-800-SHOP-OWN</p>
+                <p><i class="fa-solid fa-location-dot"></i> 123 Pet Street, CA 90210</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+

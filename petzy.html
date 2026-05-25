@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawCare — The Best Care For Your Best Friend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- KEPT YOUR EXACT TAILWIND CONFIG -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { poppins: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        cream: { 50:'#FFFDF9', 100:'#FFF8F0', 200:'#FFF0DE', 300:'#FFE4C4', 400:'#F5D6B8', 500:'#D4A574', 600:'#B8864E', 700:'#8B6B3E' },
+                        bark: { 50:'#FAF6F2', 100:'#F0E6D8', 200:'#E0D0BC', 300:'#C4A882', 400:'#8B7355', 500:'#6B5640', 600:'#3D2C2E', 700:'#2A1F20' },
+                        pastel: { purple:'#EDE3F7', green:'#DEF0E1', yellow:'#FFF6D6', blue:'#DCE9F7', pink:'#FDE8E5', orange:'#FDEBD0' },
+                        accent: { orange:'#F59E42', green:'#5EBB6E', pink:'#F27987', purple:'#9B7ED8', blue:'#5B9BD5' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* KEPT YOUR EXACT CSS */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scroll-padding-top:64px; }
+        body { font-family:'Poppins',sans-serif; background:#FFF8F0; color:#3D2C2E; overflow-x:hidden; }
+        ::-webkit-scrollbar { width:7px; }
+        ::-webkit-scrollbar-track { background:#FFF8F0; }
+        ::-webkit-scrollbar-thumb { background:#D4A574; border-radius:4px; }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        .anim { opacity:0; transform:translateY(32px); transition:all .65s cubic-bezier(.4,0,.2,1); }
+        .anim.show { opacity:1; transform:translateY(0); }
+        .anim-d1{transition-delay:.1s} .anim-d2{transition-delay:.2s} .anim-d3{transition-delay:.3s} .anim-d4{transition-delay:.4s} .anim-d5{transition-delay:.5s}
+
+        .nav-link { position:relative; }
+        .nav-link::after { content:''; position:absolute; bottom:-2px; left:50%; width:0; height:2px; background:#D4A574; border-radius:1px; transition:all .25s; transform:translateX(-50%); }
+        .nav-link:hover::after,.nav-link.active::after { width:70%; }
+
+        .card { background:#fff; border-radius:20px; border:1px solid #F0E6D8; box-shadow:0 2px 16px rgba(139,107,62,.05); transition:all .3s; }
+        .card:hover { box-shadow:0 8px 32px rgba(139,107,62,.1); transform:translateY(-3px); }
+
+        .circle-icon { width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:all .3s; cursor:pointer; }
+        .circle-icon:hover { transform:translateY(-5px) scale(1.06); }
+
+        .btn-warm { background:linear-gradient(135deg,#D4A574,#C4956A); color:#fff; padding:12px 28px; border-radius:14px; font-weight:600; font-size:15px; border:none; cursor:pointer; transition:all .3s; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(212,165,116,.3); }
+        .btn-warm:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(212,165,116,.4); }
+        .btn-outline { background:#fff; color:#3D2C2E; padding:12px 28px; border-radius:14px; font-weight:600; font-size:15px; border:2px solid #F0E6D8; cursor:pointer; transition:all .3s; display:inline-flex; align-items:center; gap:8px; }
+        .btn-outline:hover { border-color:#D4A574; background:#FFF8F0; transform:translateY(-2px); }
+
+        .symptom-tag { padding:8px 18px; border-radius:50px; font-size:13px; font-weight:500; border:1.5px solid #F0E6D8; background:#fff; color:#6B5640; cursor:pointer; transition:all .25s; user-select:none; position: relative; }
+        .symptom-tag:hover { border-color:#D4A574; background:#FFF8F0; }
+        .symptom-tag.selected { background:#D4A574; color:#fff; border-color:#D4A574; box-shadow:0 4px 12px rgba(212,165,116,.3); transform: scale(1.05); }
+
+        .filter-btn { padding:8px 20px; border-radius:50px; font-size:13px; font-weight:600; border:1.5px solid #F0E6D8; background:#fff; color:#6B5640; cursor:pointer; transition:all .25s; }
+        .filter-btn:hover,.filter-btn.active { background:#D4A574; color:#fff; border-color:#D4A574; }
+
+        .modal-overlay { position:fixed; inset:0; background:rgba(42,31,32,.45); backdrop-filter:blur(4px); z-index:100; display:none; align-items:center; justify-content:center; }
+        .modal-overlay.open { display:flex; }
+        .modal-box { background:#fff; border-radius:24px; padding:32px; max-width:420px; width:90%; box-shadow:0 24px 64px rgba(0,0,0,.15); animation:fadeUp .35s ease; }
+
+        .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(100px); background:#3D2C2E; color:#fff; padding:14px 24px; border-radius:14px; font-size:14px; font-weight:500; z-index:200; display:flex; align-items:center; gap:10px; box-shadow:0 16px 40px rgba(61,44,46,.25); transition:transform .4s cubic-bezier(.4,0,.2,1); white-space:nowrap; }
+        .toast.show { transform:translateX(-50%) translateY(0); }
+
+        .mobile-menu { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+        .mobile-menu.open { max-height:420px; }
+
+        .deco-paw { position:absolute; opacity:.04; pointer-events:none; }
+
+        /* NEW CSS FOR ADVANCED FEATURES (Hidden mostly) */
+        .progress-container { width: 100%; background-color: #F0E6D8; border-radius: 10px; margin: 15px 0; overflow: hidden; display: none; }
+        .progress-bar { height: 6px; width: 0%; background: #D4A574; transition: width 0.1s linear; }
+        .meter-bg { background: #eee; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 5px; }
+        .meter-fill { height: 100%; width: 0%; transition: width 1s ease-out; }
+        .cart-badge { position: absolute; top: -5px; right: -8px; background: #F27987; color: white; font-size: 10px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; transform: scale(0); transition: transform 0.3s; }
+        .cart-badge.active { transform: scale(1); }
+    </style>
+</head>
+<body>
+
+<!-- Toast -->
+<div id="toast" class="toast"><span id="t-icon">🐾</span><span id="t-msg"></span></div>
+
+<!-- Decorative Paws -->
+<div class="deco-paw text-7xl" style="top:8%;left:4%">🐾</div>
+<div class="deco-paw text-5xl" style="top:28%;right:6%">🐾</div>
+<div class="deco-paw text-6xl" style="top:55%;left:2%">🐾</div>
+<div class="deco-paw text-8xl" style="top:78%;right:3%">🐾</div>
+
+<!-- ========== LOGIN MODAL ========== -->
+<div id="loginModal" class="modal-overlay" onclick="if(event.target===this)closeModal('loginModal')">
+    <div class="modal-box">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-bark-600">Welcome Back 👋</h3>
+            <button onclick="closeModal('loginModal')" class="w-8 h-8 rounded-full bg-cream-100 hover:bg-cream-200 flex items-center justify-center transition-colors"><i data-lucide="x" class="w-4 h-4 text-bark-500"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Email</label><input type="email" placeholder="you@email.com" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+            <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Password</label><input type="password" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+            <button class="btn-warm w-full justify-center" onclick="closeModal('loginModal');showToast('🐾','Logged in successfully!')">Login</button>
+            <p class="text-center text-xs text-bark-300">Don't have an account? <a href="#" onclick="event.preventDefault();closeModal('loginModal');openModal('signupModal')" class="text-cream-600 font-semibold hover:underline">Sign Up</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- ========== SIGNUP MODAL ========== -->
+<div id="signupModal" class="modal-overlay" onclick="if(event.target===this)closeModal('signupModal')">
+    <div class="modal-box">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-bark-600">Create Account 🐾</h3>
+            <button onclick="closeModal('signupModal')" class="w-8 h-8 rounded-full bg-cream-100 hover:bg-cream-200 flex items-center justify-center transition-colors"><i data-lucide="x" class="w-4 h-4 text-bark-500"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Full Name</label><input type="text" placeholder="John Doe" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+            <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Email</label><input type="email" placeholder="you@email.com" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+            <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Password</label><input type="password" placeholder="Min 8 characters" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+            <button class="btn-warm w-full justify-center" onclick="closeModal('signupModal');showToast('🎉','Account created! Welcome to PawCare!')">Sign Up</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========== BOOKING MODAL ========== -->
+<div id="bookModal" class="modal-overlay" onclick="if(event.target===this)closeModal('bookModal')">
+    <div class="modal-box">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-bark-600">Book Appointment 📅</h3>
+            <button onclick="closeModal('bookModal')" class="w-8 h-8 rounded-full bg-cream-100 hover:bg-cream-200 flex items-center justify-center transition-colors"><i data-lucide="x" class="w-4 h-4 text-bark-500"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Doctor</label><input id="bookDoc" type="text" readonly class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm bg-cream-50"></div>
+            <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Your Name</label><input type="text" placeholder="Your name" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+            <div class="grid grid-cols-2 gap-3">
+                <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Date</label><input type="date" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+                <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Time</label><input type="time" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+            </div>
+            <div><label class="text-xs font-semibold text-bark-400 mb-1 block">Pet Name & Type</label><input type="text" placeholder="e.g. Max (Dog)" class="w-full px-4 py-3 rounded-xl border border-bark-100 text-sm focus:outline-none focus:border-cream-500 transition-colors"></div>
+            <button class="btn-warm w-full justify-center" onclick="closeModal('bookModal');showToast('✅','Appointment booked successfully!')">Confirm Booking</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-bark-100" style="box-shadow:0 1px 12px rgba(139,107,62,.06)">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between h-14">
+            <a href="#home" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-xl bg-cream-500 flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6">
+                    <svg viewBox="0 0 24 24" fill="#fff" class="w-5 h-5"><path d="M12 18.5c-2.5 0-4.5-1-6-3-.8-1.1-1.2-2.3-1.2-3.5C4.8 9.5 7 7 10 6.5c.5-2 2-3.5 4-3.5s3.5 1.5 4 3.5c3 .5 5.2 3 5.2 5.5 0 1.2-.4 2.4-1.2 3.5-1.5 2-3.5 3-6 3h-4z"/><circle cx="8" cy="5" r="1.8"/><circle cx="16" cy="5" r="1.8"/><circle cx="6" cy="8" r="1.5"/><circle cx="18" cy="8" r="1.5"/></svg>
+                </div>
+                <span class="text-base font-bold text-bark-600">Petzy</span>
+            </a>
+            <div class="hidden lg:flex items-center gap-1">
+                <a href="#home" class="nav-link px-3 py-1.5 text-[13px] font-medium text-bark-600 hover:text-cream-600 transition-colors">Home</a>
+                <a href="#symptoms" class="nav-link px-3 py-1.5 text-[13px] font-medium text-bark-400 hover:text-cream-600 transition-colors">Symptom Checker</a>
+                <a href="#doctor" class="nav-link px-3 py-1.5 text-[13px] font-medium text-bark-400 hover:text-cream-600 transition-colors">Doctor Consultation</a>
+                <a href="#grooming" class="nav-link px-3 py-1.5 text-[13px] font-medium text-bark-400 hover:text-cream-600 transition-colors">Pet Grooming</a>
+                <div class="relative inline-block mr-2">
+                    <a href="#shopping" class="nav-link px-3 py-1.5 text-[13px] font-medium text-bark-400 hover:text-cream-600 transition-colors">Pet Shopping</a>
+                    <!-- Cart Badge (Added Logic) -->
+                    <span id="cartBadge" class="cart-badge">0</span>
+                </div>
+                <a href="#emergency" class="nav-link px-3 py-1.5 text-[13px] font-medium text-bark-400 hover:text-cream-600 transition-colors">Emergency</a>
+            </div>
+            <div class="hidden lg:flex items-center gap-2">
+                <button onclick="openModal('loginModal')" class="px-4 py-1.5 text-[13px] font-semibold text-bark-500 hover:text-cream-600 transition-colors rounded-xl hover:bg-cream-100">Login</button>
+                <button onclick="openModal('signupModal')" class="btn-warm text-[13px] py-2 px-5">Sign Up</button>
+            </div>
+            <button class="lg:hidden p-2 rounded-xl hover:bg-cream-100 transition-colors" onclick="document.getElementById('mobMenu').classList.toggle('open')">
+                <i data-lucide="menu" class="w-5 h-5 text-bark-600"></i>
+            </button>
+        </div>
+        <div id="mobMenu" class="mobile-menu lg:hidden">
+            <div class="py-3 space-y-1 border-t border-bark-100">
+                <a href="#home" class="block px-3 py-2 text-sm font-medium text-bark-500 hover:bg-cream-100 rounded-xl" onclick="document.getElementById('mobMenu').classList.remove('open')">Home</a>
+                <a href="#symptoms" class="block px-3 py-2 text-sm font-medium text-bark-500 hover:bg-cream-100 rounded-xl" onclick="document.getElementById('mobMenu').classList.remove('open')">Symptom Checker</a>
+                <a href="#doctor" class="block px-3 py-2 text-sm font-medium text-bark-500 hover:bg-cream-100 rounded-xl" onclick="document.getElementById('mobMenu').classList.remove('open')">Doctor Consultation</a>
+                <a href="#grooming" class="block px-3 py-2 text-sm font-medium text-bark-500 hover:bg-cream-100 rounded-xl" onclick="document.getElementById('mobMenu').classList.remove('open')">Pet Grooming</a>
+                <a href="#shopping" class="block px-3 py-2 text-sm font-medium text-bark-500 hover:bg-cream-100 rounded-xl" onclick="document.getElementById('mobMenu').classList.remove('open')">Pet Shopping</a>
+                <a href="#emergency" class="block px-3 py-2 text-sm font-medium text-bark-500 hover:bg-cream-100 rounded-xl" onclick="document.getElementById('mobMenu').classList.remove('open')">Emergency</a>
+                <div class="pt-2 flex gap-2">
+                    <button onclick="openModal('loginModal')" class="flex-1 py-2 text-sm font-semibold text-bark-500 bg-cream-100 rounded-xl">Login</button>
+                    <button onclick="openModal('signupModal')" class="flex-1 py-2 text-sm font-semibold text-white bg-cream-500 rounded-xl">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section id="home" class="py-16 lg:py-24 px-4 sm:px-6 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-cream-200/40 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-pastel-green/30 rounded-full blur-[80px] pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+            <div class="anim inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pastel-yellow border border-cream-300 mb-6">
+                <span class="text-sm">🐾</span>
+                <span class="text-xs font-semibold text-bark-500 uppercase tracking-wider">Welcome to Petzy</span>
+            </div>
+            <h1 class="anim anim-d1 text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-bark-600 leading-[1.12] mb-6 tracking-tight">
+                The Best Care<br>For Your <span class="text-cream-600">Best Friend</span>
+            </h1>
+            <p class="anim anim-d2 text-bark-400 text-base sm:text-lg leading-relaxed mb-8 max-w-md">
+                Comprehensive pet healthcare — from symptom checking and vet consultations to grooming, shopping, and 24/7 emergency support.
+            </p>
+            <div class="anim anim-d3 flex flex-wrap gap-3">
+                <a href="#symptoms" class="btn-warm">Check Pet Symptoms <i data-lucide="search" class="w-4 h-4"></i></a>
+                <a href="#emergency" class="btn-outline !border-red-200 !text-red-500 hover:!bg-red-50">🚨 Emergency Help</a>
+            </div>
+        </div>
+        <div class="anim anim-d2 relative flex justify-center">
+            <div class="absolute -top-6 -right-2 w-16 h-16 rounded-full bg-pastel-yellow border-2 border-cream-300" style="animation:float 3s ease-in-out infinite"></div>
+            <div class="absolute -bottom-4 -left-4 w-12 h-12 rounded-full bg-pastel-green border-2 border-green-200" style="animation:float 3.5s ease-in-out infinite .5s"></div>
+            <div class="absolute top-1/2 -right-8 text-3xl" style="animation:float 2s ease-in-out infinite">🐾</div>
+            <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-[380px] lg:h-[380px]">
+                <div class="absolute inset-0 rounded-full bg-gradient-to-br from-cream-300 to-cream-400 p-1.5">
+                    <img src="https://i.shgcdn.com/70731793-0e94-4a87-99dc-016177af0f72/-/format/auto/-/preview/3000x3000/-/quality/lighter/" alt="Person with pet" class="w-full h-full object-cover rounded-full">
+                </div>
+                <div class="absolute -bottom-4 -right-4 bg-white rounded-2xl px-4 py-3 shadow-lg border border-bark-100 flex items-center gap-2" style="animation:float 3s ease-in-out infinite 1s">
+                    <div class="w-10 h-10 rounded-full bg-pastel-green flex items-center justify-center text-lg">💚</div>
+                    <div><div class="text-sm font-bold text-bark-600"></div><div class="text-[11px] text-bark-300 font-medium">Happy Pets</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== SERVICES ========== -->
+<section id="services" class="py-16 lg:py-20 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="anim text-3xl sm:text-4xl font-extrabold text-bark-600 mb-3">All Pet Care Services</h2>
+            <p class="anim anim-d1 text-bark-400 text-base max-w-md mx-auto">Everything your furry friend needs under one roof.</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-6 sm:gap-8 lg:gap-10">
+            <a href="#symptoms" class="anim anim-d1 flex flex-col items-center gap-3 group">
+                <div class="circle-icon bg-pastel-purple shadow-md shadow-purple-100"><span class="text-3xl">🩺</span></div>
+                <div class="text-center"><h3 class="text-sm font-bold text-bark-600 group-hover:text-cream-600 transition-colors">Symptom Checker</h3><p class="text-[11px] text-bark-300 mt-0.5">AI-powered analysis</p></div>
+            </a>
+            <a href="#doctor" class="anim anim-d2 flex flex-col items-center gap-3 group">
+                <div class="circle-icon bg-pastel-blue shadow-md shadow-blue-100"><span class="text-3xl">👨‍⚕️</span></div>
+                <div class="text-center"><h3 class="text-sm font-bold text-bark-600 group-hover:text-cream-600 transition-colors">Doctor Consult</h3><p class="text-[11px] text-bark-300 mt-0.5">Certified veterinarians</p></div>
+            </a>
+            <a href="#grooming" class="anim anim-d3 flex flex-col items-center gap-3 group">
+                <div class="circle-icon bg-pastel-yellow shadow-md shadow-yellow-100"><span class="text-3xl">🛁</span></div>
+                <div class="text-center"><h3 class="text-sm font-bold text-bark-600 group-hover:text-cream-600 transition-colors">Pet Grooming</h3><p class="text-[11px] text-bark-300 mt-0.5">Spa & styling</p></div>
+            </a>
+            <a href="#emergency" class="anim anim-d4 flex flex-col items-center gap-3 group">
+                <div class="circle-icon bg-pastel-pink shadow-md shadow-red-100"><span class="text-3xl">🏥</span></div>
+                <div class="text-center"><h3 class="text-sm font-bold text-bark-600 group-hover:text-cream-600 transition-colors">Emergency Vet</h3><p class="text-[11px] text-bark-300 mt-0.5">24/7 urgent care</p></div>
+            </a>
+            <a href="#shopping" class="anim anim-d5 flex flex-col items-center gap-3 group">
+                <div class="circle-icon bg-pastel-green shadow-md shadow-green-100"><span class="text-3xl">🛍️</span></div>
+                <div class="text-center"><h3 class="text-sm font-bold text-bark-600 group-hover:text-cream-600 transition-colors">Pet Shopping</h3><p class="text-[11px] text-bark-300 mt-0.5">Toys, food & more</p></div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ========== SYMPTOM CHECKER (ENHANCED LOGIC, SAME UI) ========== -->
+<section id="symptoms" class="py-16 lg:py-24 px-4 sm:px-6 bg-white/50">
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-8">
+            <div class="anim inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pastel-purple mb-4"><span class="text-xs">🩺</span><span class="text-xs font-bold text-purple-700 uppercase tracking-wider">Health Tool</span></div>
+            <h2 class="anim anim-d1 text-3xl sm:text-4xl font-extrabold text-bark-600 mb-3">Pet Symptom Checker</h2>
+            <p class="anim anim-d2 text-bark-400 text-base">Select your pet type and symptoms to get instant guidance.</p>
+        </div>
+        <div class="anim anim-d3 card p-6 sm:p-8">
+            <!-- Pet Type -->
+            <label class="text-xs font-bold text-bark-500 uppercase tracking-wider mb-3 block">Pet Type</label>
+            <div class="flex gap-3 mb-6">
+                <button class="pet-type-btn symptom-tag selected" onclick="selectPet(this,'Dog')">🐕 Dog</button>
+                <button class="pet-type-btn symptom-tag" onclick="selectPet(this,'Cat')">🐈 Cat</button>
+                
+            </div>
+            <!-- Symptoms -->
+            <label class="text-xs font-bold text-bark-500 uppercase tracking-wider mb-3 block">Symptoms (select one or more)</label>
+            <div class="flex flex-wrap gap-2 mb-6">
+                <!-- Added severity data attributes for logic -->
+                <button class="symptom-tag" onclick="toggleSymptom(this, 'Vomiting', 8)">🤢 Vomiting</button>
+                <button class="symptom-tag" onclick="toggleSymptom(this, 'Coughing', 5)">😷 Coughing</button>
+                <button class="symptom-tag" onclick="toggleSymptom(this, 'Loss of Appetite', 7)">📉 Loss of Appetite</button>
+                <button class="symptom-tag" onclick="toggleSymptom(this, 'Lethargy', 6)">😴 Lethargy</button>
+                <button class="symptom-tag" onclick="toggleSymptom(this, 'Excessive Scratching', 4)">🧴 Excessive Scratching</button>
+                <button class="symptom-tag" onclick="toggleSymptom(this, 'Watery Eyes', 3)">💧 Watery Eyes</button>
+                <button class="symptom-tag" onclick="toggleSymptom(this, 'Limping', 7)">🤕 Limping</button>
+                <button class="symptom-tag" onclick="toggleSymptom(this, 'Fever', 9)">🥵 Fever</button>
+            </div>
+            
+            <!-- Analysis Loading (Hidden by default) -->
+            <div id="analysisLoader" class="hidden text-center py-4">
+                <div class="text-xs font-bold text-bark-500 mb-2">Analyzing symptoms...</div>
+                <div class="progress-container" style="display:block">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <button id="checkBtn" class="btn-warm w-full justify-center" onclick="startAnalysis()">Check Symptoms <i data-lucide="search" class="w-4 h-4"></i></button>
+            
+            <!-- Result (Enhanced) -->
+            <div id="symptomResult" class="hidden mt-6 p-5 rounded-2xl bg-cream-50 border border-bark-100 animate-[fadeUp_0.5s_ease]">
+                <div class="flex items-start gap-3">
+                    <span id="resultIcon" class="text-2xl mt-0.5"></span>
+                    <div class="w-full">
+                        <h4 id="resultTitle" class="text-sm font-bold text-bark-600 mb-1"></h4>
+                        
+                        <!-- New Possibility Meter -->
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs text-bark-400">
+                                <span>Illness Possibility</span>
+                                <span id="possibilityText" class="font-bold text-bark-600">0%</span>
+                            </div>
+                            <div class="meter-bg">
+                                <div id="possibilityBar" class="meter-fill bg-cream-500"></div>
+                            </div>
+                        </div>
+
+                        <p id="resultDesc" class="text-xs text-bark-400 leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== DOCTOR CONSULTATION ========== -->
+<section id="doctor" class="py-16 lg:py-24 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <div class="anim inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pastel-blue mb-4"><span class="text-xs">👨‍⚕️</span><span class="text-xs font-bold text-blue-700 uppercase tracking-wider">Expert Care</span></div>
+            <h2 class="anim anim-d1 text-3xl sm:text-4xl font-extrabold text-bark-600 mb-3">Doctor Consultation</h2>
+            <p class="anim anim-d2 text-bark-400 text-base max-w-lg mx-auto">Book appointments with certified veterinarians.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="anim anim-d1 card p-6 text-center">
+                <div class="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden border-[3px] border-cream-200"><img src="https://picsum.photos/seed/pawcare-vet-sarah/200/200.jpg" alt="Dr. Sarah" class="w-full h-full object-cover"></div>
+                <h3 class="text-base font-bold text-bark-600">Dr. Sarah Mitchell</h3>
+                <p class="text-xs text-cream-600 font-semibold mt-0.5 mb-2">Small Animal Specialist</p>
+                <p class="text-xs text-bark-300 mb-2">12 years experience</p>
+                <div class="flex items-center justify-center gap-1 mb-4"><span class="text-yellow-400 text-sm">★★★★★</span><span class="text-xs text-bark-300 font-medium">4.9</span></div>
+                <button class="btn-warm w-full justify-center text-sm py-2.5" onclick="openBooking('Dr. Sarah Mitchell')">Book Appointment</button>
+            </div>
+            <div class="anim anim-d2 card p-6 text-center">
+                <div class="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden border-[3px] border-cream-200"><img src="https://picsum.photos/seed/pawcare-vet-james/200/200.jpg" alt="Dr. James" class="w-full h-full object-cover"></div>
+                <h3 class="text-base font-bold text-bark-600">Dr. James Cooper</h3>
+                <p class="text-xs text-cream-600 font-semibold mt-0.5 mb-2">Emergency & Critical Care</p>
+                <p class="text-xs text-bark-300 mb-2">8 years experience</p>
+                <div class="flex items-center justify-center gap-1 mb-4"><span class="text-yellow-400 text-sm">★★★★★</span><span class="text-xs text-bark-300 font-medium">4.8</span></div>
+                <button class="btn-warm w-full justify-center text-sm py-2.5" onclick="openBooking('Dr. James Cooper')">Book Appointment</button>
+            </div>
+            <div class="anim anim-d3 card p-6 text-center">
+                <div class="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden border-[3px] border-cream-200"><img src="https://picsum.photos/seed/pawcare-vet-emily/200/200.jpg" alt="Dr. Emily" class="w-full h-full object-cover"></div>
+                <h3 class="text-base font-bold text-bark-600">Dr. Emily Chen</h3>
+                <p class="text-xs text-cream-600 font-semibold mt-0.5 mb-2">Dermatology & Nutrition</p>
+                <p class="text-xs text-bark-300 mb-2">10 years experience</p>
+                <div class="flex items-center justify-center gap-1 mb-4"><span class="text-yellow-400 text-sm">★★★★★</span><span class="text-xs text-bark-300 font-medium">5.0</span></div>
+                <button class="btn-warm w-full justify-center text-sm py-2.5" onclick="openBooking('Dr. Emily Chen')">Book Appointment</button>
+            </div>
+        </div>
+        <!-- Video Call Banner -->
+        <div class="anim anim-d4 card p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-5 bg-gradient-to-r from-pastel-blue to-pastel-purple border-none">
+            <div class="w-14 h-14 rounded-full bg-white/80 flex items-center justify-center text-2xl shrink-0 shadow-sm">📹</div>
+            <div class="flex-1 text-center sm:text-left">
+                <h3 class="text-base font-bold text-bark-600 mb-1">Video Consultation Available</h3>
+                <p class="text-sm text-bark-400">Connect with vets face-to-face from the comfort of your home.</p>
+            </div>
+            <button class="btn-warm text-sm py-2.5 shrink-0" onclick="showToast('📹','Starting video call...')">
+                <i data-lucide="video" class="w-4 h-4"></i> Start Video Call
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ========== PET GROOMING ========== -->
+<section id="grooming" class="py-16 lg:py-24 px-4 sm:px-6 bg-white/50">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+            <div class="anim inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pastel-yellow mb-4"><span class="text-xs">🛁</span><span class="text-xs font-bold text-yellow-700 uppercase tracking-wider">Spa & Groom</span></div>
+            <h2 class="anim anim-d1 text-3xl sm:text-4xl font-extrabold text-bark-600 mb-3">Pet Grooming Services</h2>
+            <p class="anim anim-d2 text-bark-400 text-base">Keep your pet looking and feeling their absolute best.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="anim anim-d1 card p-6 flex items-start gap-4">
+                <div class="circle-icon !w-16 !h-16 bg-pastel-blue shrink-0"><span class="text-2xl">🫧</span></div>
+                <div class="flex-1">
+                    <h3 class="text-base font-bold text-bark-600 mb-1">Full Bath</h3>
+                    <p class="text-xs text-bark-400 mb-3">Deep cleaning with premium shampoo and conditioner for a fresh coat.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-cream-600"></span>
+                        <button class="text-xs font-semibold text-cream-600 hover:underline" onclick="openBooking('Grooming — Full Bath')">Book Now →</button>
+                    </div>
+                </div>
+            </div>
+            <div class="anim anim-d2 card p-6 flex items-start gap-4">
+                <div class="circle-icon !w-16 !h-16 bg-pastel-yellow shrink-0"><span class="text-2xl">✂️</span></div>
+                <div class="flex-1">
+                    <h3 class="text-base font-bold text-bark-600 mb-1">Hair Cutting</h3>
+                    <p class="text-xs text-bark-400 mb-3">Breed-specific styling and precision trimming by expert groomers.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-cream-600"></span>
+                        <button class="text-xs font-semibold text-cream-600 hover:underline" onclick="openBooking('Grooming — Hair Cut')">Book Now →</button>
+                    </div>
+                </div>
+            </div>
+            <div class="anim anim-d3 card p-6 flex items-start gap-4">
+                <div class="circle-icon !w-16 !h-16 bg-pastel-pink shrink-0"><span class="text-2xl">💅</span></div>
+                <div class="flex-1">
+                    <h3 class="text-base font-bold text-bark-600 mb-1">Nail Care</h3>
+                    <p class="text-xs text-bark-400 mb-3">Safe and gentle nail trimming and filing for comfort and health.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-cream-600"></span>
+                        <button class="text-xs font-semibold text-cream-600 hover:underline" onclick="openBooking('Grooming — Nail Care')">Book Now →</button>
+                    </div>
+                </div>
+            </div>
+            <div class="anim anim-d4 card p-6 flex items-start gap-4 relative overflow-hidden">
+                <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-cream-500 text-white text-[10px] font-bold">POPULAR</div>
+                <div class="circle-icon !w-16 !h-16 bg-pastel-green shrink-0"><span class="text-2xl">✨</span></div>
+                <div class="flex-1">
+                    <h3 class="text-base font-bold text-bark-600 mb-1">Full Package</h3>
+                    <p class="text-xs text-bark-400 mb-3">Complete bath, haircut, nail care, ear cleaning & massage.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-cream-600"></span>
+                        <button class="text-xs font-semibold text-cream-600 hover:underline" onclick="openBooking('Grooming — Full Package')">Book Now →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== PET SHOPPING (CART LOGIC ADDED) ========== -->
+<section id="shopping" class="py-16 lg:py-24 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-6">
+            <div class="anim inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pastel-green mb-4"><span class="text-xs">🛍️</span><span class="text-xs font-bold text-green-700 uppercase tracking-wider">Shop</span></div>
+            <h2 class="anim anim-d1 text-3xl sm:text-4xl font-extrabold text-bark-600 mb-3">Pet Shopping</h2>
+            <p class="anim anim-d2 text-bark-400 text-base max-w-lg mx-auto">Premium products curated for your pet's happiness.</p>
+        </div>
+        <!-- Filters -->
+        <div class="anim anim-d2 flex flex-wrap justify-center gap-2 mb-10">
+            <button class="filter-btn active" onclick="filterProducts('all',this)">All</button>
+            <button class="filter-btn" onclick="filterProducts('food',this)">🍖 Food</button>
+            <button class="filter-btn" onclick="filterProducts('toys',this)">🧸 Toys</button>
+            <button class="filter-btn" onclick="filterProducts('accessories',this)">🎀 Accessories</button>
+            <button class="filter-btn" onclick="filterProducts('health',this)">💊 Health</button>
+        </div>
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            <div class="prod-card card overflow-hidden" data-cat="toys">
+                <div class="aspect-square bg-cream-50 overflow-hidden"><img src="https://m.media-amazon.com/images/I/71sVrYu8GPL._AC_.jpg" alt="Toy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                <div class="p-4 flex flex-col"><span class="text-[10px] font-bold text-accent-purple uppercase tracking-wider mb-1">Toys</span><h3 class="text-sm font-bold text-bark-600 mb-1 flex-1">Interactive Ball Toy</h3><button class="btn-warm w-full justify-center text-xs py-2" onclick="buyProduct('pet toys')">Buy Now</button></div>
+            </div>
+            <div class="prod-card card overflow-hidden" data-cat="food">
+                <div class="aspect-square bg-cream-50 overflow-hidden"><img src="https://m.media-amazon.com/images/I/41Y7oIF5InL._SL500_.jpg" alt="Food" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                <div class="p-4 flex flex-col"><span class="text-[10px] font-bold text-accent-orange uppercase tracking-wider mb-1">Food</span><h3 class="text-sm font-bold text-bark-600 mb-1 flex-1">Premium Dry Food</h3><button class="btn-warm w-full justify-center text-xs py-2" onclick="buyProduct('Premium Dry Food')">Buy Now</button></div>
+            </div>
+            <div class="prod-card card overflow-hidden" data-cat="accessories">
+                <div class="aspect-square bg-cream-50 overflow-hidden"><img src="https://m.media-amazon.com/images/I/71yEqRURZ8L._AC_.jpg" alt="Collar" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                <div class="p-4 flex flex-col"><span class="text-[10px] font-bold text-accent-pink uppercase tracking-wider mb-1">Accessories</span><h3 class="text-sm font-bold text-bark-600 mb-1 flex-1">Leather Pet Collar</h3><button class="btn-warm w-full justify-center text-xs py-2" onclick="buyProduct('Leather Pet Collar')">Buy Now</button></div>
+            </div>
+            <div class="prod-card card overflow-hidden" data-cat="health">
+                <div class="aspect-square bg-cream-50 overflow-hidden"><img src="https://i5.walmartimages.com/seo/Oimmal-Omega-3-Dogs-Fish-Oil-Skin-Coat-180-Chewable-Tablets-6-9-EPA-DHA-Vitamins-Dog-Shedding-Dry-Heart-Support-1Pack_04dc076e-123e-4ba7-8d29-6a7a36be0791.d7a153e7abec3e47d2c0326b3ff155a6.jpeg" alt="Vitamins" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                <div class="p-4 flex flex-col"><span class="text-[10px] font-bold text-accent-green uppercase tracking-wider mb-1">Health</span><h3 class="text-sm font-bold text-bark-600 mb-1 flex-1">Multivitamin Supplements</h3><button class="btn-warm w-full justify-center text-xs py-2" onclick="buyProduct('Multivitamin Supplements')">Buy Now</button></div>
+            </div>
+            <div class="prod-card card overflow-hidden" data-cat="toys">
+                <div class="aspect-square bg-cream-50 overflow-hidden"><img src="https://i.pinimg.com/736x/ec/8b/eb/ec8beba56def81bb46ae6443859aa121.jpg" alt="Rope" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                <div class="p-4 flex flex-col"><span class="text-[10px] font-bold text-accent-purple uppercase tracking-wider mb-1">Toys</span><h3 class="text-sm font-bold text-bark-600 mb-1 flex-1">Durable Rope Toy</h3><button class="btn-warm w-full justify-center text-xs py-2" onclick="buyProduct('Durable Rope Toy')">Buy Now</button></div>
+            </div>
+            <div class="prod-card card overflow-hidden" data-cat="food">
+                <div class="aspect-square bg-cream-50 overflow-hidden"><img src="https://m.media-amazon.com/images/I/71u5HOxbmlL.jpg" alt="Treats" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                <div class="p-4 flex flex-col"><span class="text-[10px] font-bold text-accent-orange uppercase tracking-wider mb-1">Food</span><h3 class="text-sm font-bold text-bark-600 mb-1 flex-1">Organic Treats Pack</h3><button class="btn-warm w-full justify-center text-xs py-2" onclick="buyProduct('Organic Treats Pack')">Buy Now</button></div>
+            </div>
+            <div class="prod-card card overflow-hidden" data-cat="accessories">
+                <div class="aspect-square bg-cream-50 overflow-hidden"><img src="https://assets.wfcdn.com/im/80398708/compr-r85/3454/345416584/Orthopedic+Corduroy+Dog+Bed+%E2%80%93+Plush+Faux+Rabbit+Fur+Pet+Bed+With+Removable+Cover+%26+Raised+Sides+For+Small/Medium+Dogs+(25%22X21%22%2C+Cream).jpg" alt="Bed" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                <div class="p-4 flex flex-col"><span class="text-[10px] font-bold text-accent-pink uppercase tracking-wider mb-1">Accessories</span><h3 class="text-sm font-bold text-bark-600 mb-1 flex-1">Orthopedic Pet Bed</h3><button class="btn-warm w-full justify-center text-xs py-2" onclick="buyProduct('Orthopedic Pet Bed')">Buy Now</button></div>
+            </div>
+            <div class="prod-card card overflow-hidden" data-cat="health">
+                <div class="aspect-square bg-cream-50 overflow-hidden"><img src="https://frontlineplus.co.nz/sites/default/files/2023-06/4_16-frontline-plus-dog-L_0.jpg" alt="Flea" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"></div>
+                <div class="p-4 flex flex-col"><span class="text-[10px] font-bold text-accent-green uppercase tracking-wider mb-1">Health</span><h3 class="text-sm font-bold text-bark-600 mb-1 flex-1">Flea & Tick Treatment</h3><button class="btn-warm w-full justify-center text-xs py-2" onclick="buyProduct('Flea & Tick Treatment')">Buy Now</button></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== EMERGENCY ========== -->
+<section id="emergency" class="py-16 lg:py-24 px-4 sm:px-6 bg-white/50">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <div class="anim inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pastel-pink mb-4"><span class="text-xs">🚨</span><span class="text-xs font-bold text-red-600 uppercase tracking-wider">24/7 Emergency</span></div>
+            <h2 class="anim anim-d1 text-3xl sm:text-4xl font-extrabold text-bark-600 mb-3">Emergency Help</h2>
+            <p class="anim anim-d2 text-bark-400 text-base max-w-lg mx-auto">Find nearby emergency vet hospitals instantly.</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <!-- Image -->
+            <div class="anim anim-d1 rounded-3xl overflow-hidden border-4 border-white shadow-xl">
+                <img src="https://petscare-assets-prod.s3.amazonaws.com/media/original_images/mixed-breed-dog-emergency-veterinary-care-48392.webp" alt="Emergency pet" class="w-full h-full object-cover">
+            </div>
+            <!-- Clinics -->
+            <div class="space-y-4">
+                <div class="anim anim-d1 card p-5">
+                    <div class="flex items-start justify-between mb-2">
+                        <h3 class="text-sm font-bold text-bark-600">City Pet Emergency Hospital</h3>
+                        <span class="px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold">24/7 Open</span>
+                    </div>
+                    <p class="text-xs text-bark-400 mb-1">📍 123 Main Street, Downtown</p>
+                    <p class="text-xs text-bark-400 mb-1">📞 +1 (555) 123-4567</p>
+                    <p class="text-xs text-bark-300 mb-3">📏 0.8 km away</p>
+                    <div class="flex gap-2">
+                        <a href="tel:+15551234567" class="btn-warm !py-2 text-xs flex-1 justify-center"><i data-lucide="phone" class="w-3 h-3"></i> Call Now</a>
+                        <a href="https://www.google.com/maps/search/vet+near+me" target="_blank" class="btn-outline !py-2 text-xs flex-1 justify-center"><i data-lucide="map" class="w-3 h-3"></i> Directions</a>
+                    </div>
+                </div>
+                <div class="anim anim-d2 card p-5">
+                    <div class="flex items-start justify-between mb-2">
+                        <h3 class="text-sm font-bold text-bark-600">Happy Paws Vet Clinic</h3>
+                        <span class="px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold">Open Now</span>
+                    </div>
+                    <p class="text-xs text-bark-400 mb-1">📍 456 Oak Avenue, Westside</p>
+                    <p class="text-xs text-bark-400 mb-1">📞 +1 (555) 234-5678</p>
+                    <p class="text-xs text-bark-300 mb-3">📏 1.5 km away</p>
+                    <div class="flex gap-2">
+                        <a href="tel:+15552345678" class="btn-warm !py-2 text-xs flex-1 justify-center"><i data-lucide="phone" class="w-3 h-3"></i> Call Now</a>
+                        <a href="https://www.google.com/maps/search/vet+near+me" target="_blank" class="btn-outline !py-2 text-xs flex-1 justify-center"><i data-lucide="map" class="w-3 h-3"></i> Directions</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<section id="about" class="py-16 lg:py-24 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="anim relative">
+                <div class="rounded-3xl overflow-hidden border-4 border-white shadow-xl"><img src="https://img.freepik.com/premium-photo/two-asian-women-with-dog_605022-72736.jpg" alt="About" class="w-full h-auto object-cover"></div>
+                <div class="absolute -bottom-5 -right-3 sm:right-6 bg-white rounded-2xl px-5 py-4 shadow-lg border border-bark-100" style="animation:float 3s ease-in-out infinite">
+                    <div class="flex items-center gap-3"><div class="text-3xl">🐕</div><div><div class="text-lg font-bold text-bark-600"></div><div class="text-xs text-bark-300 font-medium">Caring for Pets</div></div></div>
+                </div>
+            </div>
+            <div>
+                <div class="anim inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pastel-orange mb-5"><span class="text-xs">💝</span><span class="text-xs font-bold text-orange-700 uppercase tracking-wider">About Us</span></div>
+                <h2 class="anim anim-d1 text-3xl sm:text-4xl font-extrabold text-bark-600 mb-5 tracking-tight">Our Journey — A Passion For Pets</h2>
+                <p class="anim anim-d2 text-bark-400 text-base leading-relaxed mb-6">PawCare started with a simple idea: every pet deserves accessible, high-quality healthcare. From a small community of pet lovers, we've grown into a trusted platform serving thousands nationwide.</p>
+                <div class="anim anim-d3 space-y-3 mb-8">
+                    <div class="flex items-start gap-3"><div class="w-7 h-7 rounded-full bg-pastel-green flex items-center justify-center text-sm shrink-0 mt-0.5">✅</div><div><h4 class="text-sm font-bold text-bark-600">Experienced Veterinarians</h4><p class="text-xs text-bark-400">Board-certified with 10+ years experience</p></div></div>
+                    <div class="flex items-start gap-3"><div class="w-7 h-7 rounded-full bg-pastel-blue flex items-center justify-center text-sm shrink-0 mt-0.5">✅</div><div><h4 class="text-sm font-bold text-bark-600">High-Quality Products</h4><p class="text-xs text-bark-400">Premium, vet-approved essentials</p></div></div>
+                    <div class="flex items-start gap-3"><div class="w-7 h-7 rounded-full bg-pastel-yellow flex items-center justify-center text-sm shrink-0 mt-0.5">✅</div><div><h4 class="text-sm font-bold text-bark-600">Regular Health Checkups</h4><p class="text-xs text-bark-400">Scheduled reminders & proactive care</p></div></div>
+                </div>
+                <button class="anim anim-d4 btn-warm" onclick="showToast('📖','Opening about page...')">More About Us <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== FEATURES ========== -->
+<section class="py-16 lg:py-20 px-4 sm:px-6 bg-white/50">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="anim text-3xl sm:text-4xl font-extrabold text-bark-600 mb-3">Why Pets Love PawCare</h2>
+            <p class="anim anim-d1 text-bark-400 text-base max-w-lg mx-auto">Here's what makes us the top choice for pet parents.</p>
+        </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="anim anim-d1 card p-6 text-center group">
+                <div class="w-16 h-16 rounded-full bg-pastel-pink flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">💝</div>
+                <h3 class="text-sm font-bold text-bark-600 mb-1">Compassionate Care</h3>
+                <p class="text-xs text-bark-400">Every pet treated like family</p>
+            </div>
+            <div class="anim anim-d2 card p-6 text-center group">
+                <div class="w-16 h-16 rounded-full bg-pastel-blue flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">🛡️</div>
+                <h3 class="text-sm font-bold text-bark-600 mb-1">Hygiene & Safety</h3>
+                <p class="text-xs text-bark-400">Clean, sanitized facilities</p>
+            </div>
+            <div class="anim anim-d3 card p-6 text-center group">
+                <div class="w-16 h-16 rounded-full bg-pastel-green flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">🎧</div>
+                <h3 class="text-sm font-bold text-bark-600 mb-1">24/7 Support</h3>
+                <p class="text-xs text-bark-400">Always here when you need us</p>
+            </div>
+            <div class="anim anim-d4 card p-6 text-center group">
+                <div class="w-16 h-16 rounded-full bg-pastel-yellow flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">🏅</div>
+                <h3 class="text-sm font-bold text-bark-600 mb-1">Premium Quality</h3>
+                <p class="text-xs text-bark-400">Only the best for your pet</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-bark-600 text-white pt-14 pb-8 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            <div class="col-span-2 md:col-span-1">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 rounded-xl bg-cream-500 flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" fill="#fff" class="w-5 h-5"><path d="M12 18.5c-2.5 0-4.5-1-6-3-.8-1.1-1.2-2.3-1.2-3.5C4.8 9.5 7 7 10 6.5c.5-2 2-3.5 4-3.5s3.5 1.5 4 3.5c3 .5 5.2 3 5.2 5.5 0 1.2-.4 2.4-1.2 3.5-1.5 2-3.5 3-6 3h-4z"/><circle cx="8" cy="5" r="1.8"/><circle cx="16" cy="5" r="1.8"/><circle cx="6" cy="8" r="1.5"/><circle cx="18" cy="8" r="1.5"/></svg>
+                    </div>
+                    <span class="text-base font-bold">PawCare</span>
+                </div>
+                <p class="text-sm text-white/50 leading-relaxed max-w-xs">The best care for your best friend. Trusted by 50,000+ pet parents.</p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold mb-4 text-white/80">Quick Links</h4>
+                <ul class="space-y-2.5">
+                    <li><a href="#home" class="text-sm text-white/40 hover:text-cream-400 transition-colors">Home</a></li>
+                    <li><a href="#about" class="text-sm text-white/40 hover:text-cream-400 transition-colors">About Us</a></li>
+                    <li><a href="#services" class="text-sm text-white/40 hover:text-cream-400 transition-colors">Services</a></li>
+                    <li><a href="#" class="text-sm text-white/40 hover:text-cream-400 transition-colors" onclick="event.preventDefault();showToast('🐾','Blog coming soon!')">Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold mb-4 text-white/80">Services</h4>
+                <ul class="space-y-2.5">
+                    <li><a href="#symptoms" class="text-sm text-white/40 hover:text-cream-400 transition-colors">Symptom Checker</a></li>
+                    <li><a href="#doctor" class="text-sm text-white/40 hover:text-cream-400 transition-colors">Doctor Consult</a></li>
+                    <li><a href="#grooming" class="text-sm text-white/40 hover:text-cream-400 transition-colors">Pet Grooming</a></li>
+                    <li><a href="#shopping" class="text-sm text-white/40 hover:text-cream-400 transition-colors">Pet Shopping</a></li>
+                    <li><a href="#emergency" class="text-sm text-white/40 hover:text-cream-400 transition-colors">Emergency</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold mb-4 text-white/80">Contact Info</h4>
+                <ul class="space-y-2.5">
+                    <li class="text-sm text-white/40 flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5"></i> hello@pawcare.com</li>
+                    <li class="text-sm text-white/40 flex items-center gap-2"><i data-lucide="phone" class="w-3.5 h-3.5"></i> +1 (555) 000-1234</li>
+                    <li class="text-sm text-white/40 flex items-center gap-2"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 123 Pet Street, CA</li>
+                </ul>
+                <div class="flex gap-3 mt-4">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/10 hover:bg-cream-500 flex items-center justify-center transition-colors" onclick="event.preventDefault();showToast('🐾','Opening Twitter...')"><i data-lucide="twitter" class="w-3.5 h-3.5"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/10 hover:bg-cream-500 flex items-center justify-center transition-colors" onclick="event.preventDefault();showToast('🐾','Opening Instagram...')"><i data-lucide="instagram" class="w-3.5 h-3.5"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/10 hover:bg-cream-500 flex items-center justify-center transition-colors" onclick="event.preventDefault();showToast('🐾','Opening Facebook...')"><i data-lucide="facebook" class="w-3.5 h-3.5"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-white/30">&copy; 2025 PawCare. All rights reserved.</p>
+            <div class="flex gap-4">
+                <a href="#" class="text-xs text-white/30 hover:text-cream-400 transition-colors" onclick="event.preventDefault()">Privacy Policy</a>
+                <a href="#" class="text-xs text-white/30 hover:text-cream-400 transition-colors" onclick="event.preventDefault()">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+lucide.createIcons();
+
+// ===== TOAST =====
+let toastT;
+function showToast(icon, msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('t-icon').textContent = icon;
+    document.getElementById('t-msg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== MODALS =====
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openBooking(doc) {
+    document.getElementById('bookDoc').value = doc;
+    openModal('bookModal');
+}
+
+// ===== SHOPPING CART LOGIC (NEW) =====
+let cartCount = 0;
+function addToCart(productName) {
+    cartCount++;
+    const badge = document.getElementById('cartBadge');
+    badge.textContent = cartCount;
+    badge.classList.add('active');
+    
+    // Pop animation
+    badge.style.transform = 'scale(1.5)';
+    setTimeout(() => badge.style.transform = 'scale(1)', 200);
+
+    showToast('🛍️', `${productName} added to cart!`);
+
+}
+function buyProduct(item){
+window.open("https://www.amazon.in/s?k=pet+" + item);
+} 
+
+
+
+// ===== SYMPTOM CHECKER LOGIC (UPGRADED) =====
+let selectedPet = 'Dog';
+let selectedSymptoms = []; // Now stores objects {name, weight}
+
+function selectPet(btn, pet) {
+    document.querySelectorAll('.pet-type-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedPet = pet;
+    document.getElementById('symptomResult').classList.add('hidden');
+    resetSymptomsUI();
+}
+
+function toggleSymptom(btn, name, weight) {
+    btn.classList.toggle('selected');
+    if (btn.classList.contains('selected')) {
+        selectedSymptoms.push({ name, weight });
+    } else {
+        selectedSymptoms = selectedSymptoms.filter(s => s.name !== name);
+    }
+    document.getElementById('symptomResult').classList.add('hidden');
+}
+
+function resetSymptomsUI() {
+    selectedSymptoms = [];
+    document.querySelectorAll('#symptomsList .symptom-tag').forEach(b => b.classList.remove('selected'));
+    document.getElementById('symptomResult').classList.add('hidden');
+}
+
+function startAnalysis() {
+    if (selectedSymptoms.length === 0) {
+        showToast('⚠️', 'Please select at least one symptom!');
+        return;
+    }
+
+    const btn = document.getElementById('checkBtn');
+    const loader = document.getElementById('analysisLoader');
+    const bar = document.getElementById('progressBar');
+    const resultBox = document.getElementById('symptomResult');
+
+    // Hide result if visible
+    resultBox.classList.add('hidden');
+    
+    // Disable button & Show loader
+    btn.disabled = true;
+    btn.innerHTML = 'Analyzing... <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>';
+    lucide.createIcons();
+    
+    loader.classList.remove('hidden');
+    bar.style.width = '0%';
+
+    // Simulate AI Processing
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 5;
+        bar.style.width = progress + '%';
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                btn.disabled = false;
+                btn.innerHTML = 'Check Symptoms <i data-lucide="search" class="w-4 h-4"></i>';
+                lucide.createIcons();
+                calculateAndShowResult();
+            }, 500);
+        }
+    }, 50); // 1 second total simulation
+}
+
+function calculateAndShowResult() {
+    // Calculate Score
+    const totalWeight = selectedSymptoms.reduce((sum, s) => sum + s.weight, 0);
+    // Base score + symptom weight multiplier
+    let possibility = Math.min(99, 30 + (totalWeight * 3.5) + (selectedSymptoms.length * 5));
+    
+    let color = 'bg-accent-green'; // Green
+    let icon = '😊';
+    let title = 'Likely Minor Issue';
+    let advice = 'Monitor at home. Ensure plenty of water and rest.';
+
+    if (possibility > 75) {
+        color = 'bg-accent-pink'; // Red/Pink
+        icon = '🚨';
+        title = 'High Urgency Detected';
+        advice = 'Symptoms suggest a serious condition. Please contact a vet immediately.';
+    } else if (possibility > 50) {
+        color = 'bg-accent-orange'; // Orange
+        icon = '⚠️';
+        title = 'Moderate Concern';
+        advice = 'Symptoms warrant a checkup soon. Monitor closely for changes.';
+    }
+
+    // Update UI
+    const resultBox = document.getElementById('symptomResult');
+    document.getElementById('resultIcon').textContent = icon;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultDesc').textContent = advice + ` Based on ${selectedSymptoms.map(s=>s.name).join(', ')}.`;
+    
+    // Update Meter
+    const meterFill = document.getElementById('possibilityBar');
+    const meterText = document.getElementById('possibilityText');
+    
+    meterFill.className = `meter-fill ${color}`;
+    meterText.textContent = Math.round(possibility) + '%';
+    
+    // Reset width first to animate
+    meterFill.style.width = '0%';
+    resultBox.classList.remove('hidden');
+    
+    // Trigger animation
+    setTimeout(() => {
+        meterFill.style.width = possibility + '%';
+    }, 50);
+
+    // Scroll to result
+    resultBox.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+// ===== SHOPPING FILTER =====
+function filterProducts(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.prod-card').forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// ===== SCROLL REVEAL =====
+const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); obs.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+
+// ===== ACTIVE NAV HIGHLIGHT =====
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+function highlightNav() {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navLinks.forEach(l => {
+        l.classList.remove('active');
+        if (l.getAttribute('href') === '#' + cur) l.classList.add('active');
+    });
+}
+window.addEventListener('scroll', highlightNav);
+</script>
+</body>
+</html>
