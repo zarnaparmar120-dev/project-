@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - PawCare</title>
+    <title>Login - petzy</title>
     <link rel="stylesheet" href="login-style.css">
     <!-- Font Awesome for icons consistent with the sources -->
     <link rel="stylesheet" href="logincss.css">
@@ -13,10 +13,10 @@
     <!-- Header Navigation as seen in Source [1] -->
     <header>
         <div class="logo">
-            <i class="fa-solid fa-paw"></i> PawCare
+            <i class="fa-solid fa-paw"></i> Petzy
         </div>
         <nav>
-            <a href="index.html">Home</a>
+            <a href="index.html.html">Home</a>
             <a href="#" class="active">Login</a>
             <a href="signup page.html" class="btn-signup">Sign Up</a>
         </nav>
@@ -50,7 +50,7 @@
                         <a href="#" class="forgot-pass">Forgot Password?</a>
                     </div>
                     
-                    <button type="submit" class="btn-login"><a href="index.html"></a>login</button>
+                   <button type="submit" class="btn-login">Login</button>
                 </form>
                 
                 
@@ -65,7 +65,7 @@
     <footer>
         <div class="footer-grid">
             <div class="footer-col about-col">
-                <div class="logo white"><i class="fa-solid fa-paw"></i> PawCare</div>
+                <div class="logo white"><i class="fa-solid fa-paw"></i> Petzy</div>
                 <p>Your trusted partner in pet health and happiness. Providing comprehensive care for your beloved companions.</p>
             </div>
             <div class="footer-col">
@@ -88,12 +88,38 @@
             </div>
             <div class="footer-col">
                 <h4>Contact Us</h4>
-                <p><i class="fa-solid fa-envelope"></i> hello@pawcare.com</p>
+                <p><i class="fa-solid fa-envelope"></i> hello@petzy.com</p>
                 <p><i class="fa-solid fa-phone"></i> 1-800-PET-CARE</p>
                 <p><i class="fa-solid fa-location-dot"></i> 123 Pet Street, CA 90210</p>
             </div>
         </div>
     </footer>
+<script>
+document.querySelector("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+        const res = await fetch("http://127.0.0.1:8000/users/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            alert("Welcome back " + result.name + "!");
+            window.location.href = "index.html";
+        } else {
+            alert(result.detail);
+        }
+    } catch (err) {
+        alert("Server se connect nahi ho pa raha. Backend chal raha hai?");
+    }
+});
+</script>
 </body>
 </html>

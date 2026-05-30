@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Login - PawCare</title>
+    <title>Doctor Login - Petzy</title>
     <link rel="stylesheet" href="doctor-style.css">
     <!-- Font Awesome for brand-consistent icons -->
     <link rel="stylesheet" href="doc.css">
@@ -13,10 +13,10 @@
     <!-- Header Navigation [Source 1] -->
     <header>
         <div class="logo">
-            <i class="fa-solid fa-paw"></i> PawCare
+            <i class="fa-solid fa-paw"></i> Petzy
         </div>
         <nav>
-            <a href="index.html">Home</a>
+            <a href="index.html.html">Home</a>
             <a href="#" class="active">Doctor Portal</a>
         </nav>
     </header>
@@ -37,8 +37,8 @@
                 
                 <form>
                     <div class="input-group">
-                        <label for="doctor-id">Doctor ID / License Number</label>
-                        <input type="text" id="doctor-id" placeholder="e.g. VET-12345" required>
+                       <label for="email">Professional Email</label>
+                       <input type="email" id="email" placeholder="sarah.j@pawcare.com" required>
                     </div>
                     
                     <div class="input-group">
@@ -54,7 +54,7 @@
                     </div>
                     
                     <!-- Button color matching the "Book Appointment" button [Source 5] -->
-                    <button type="submit" class="btn-doctor-login">Enter Dashboard</button>
+                    <button type="submit" class="btn-login">Login</button>
                 </form>
                 
                 <div class="support-link">
@@ -68,7 +68,7 @@
     <footer>
         <div class="footer-grid">
             <div class="footer-col about-col">
-                <div class="logo white"><i class="fa-solid fa-paw"></i> PawCare</div>
+                <div class="logo white"><i class="fa-solid fa-paw"></i> Petzy</div>
                 <p>Your trusted partner in pet health and happiness. Providing comprehensive care for your beloved companions.</p>
             </div>
             <div class="footer-col">
@@ -90,13 +90,41 @@
             </div>
             <div class="footer-col">
                 <h4>Contact Us</h4>
-                <p><i class="fa-solid fa-envelope"></i> admin@pawcare.com</p>
+                <p><i class="fa-solid fa-envelope"></i> admin@petzy.com</p>
                 <p><i class="fa-solid fa-phone"></i> 1-800-VET-ONLY</p>
                 <p><i class="fa-solid fa-location-dot"></i> 123 Pet Street, CA 90210</p>
             </div>
         </div>
     </footer>
 
+<script>
+document.querySelector("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = {
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+    };
+
+    try {
+        const res = await fetch("http://127.0.0.1:8000/doctors/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            alert("Welcome Dr. " + result.name + "!");
+            window.location.href = "docdashboard.html";
+        } else {
+            alert(result.detail);
+        }
+    } catch (err) {
+        alert("Server se connect nahi ho pa raha. Backend chal raha hai?");
+    }
+});
+</script>
 </body>
 </html>
-

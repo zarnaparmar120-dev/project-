@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grooming Services — PawCare</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons & Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Shared JS (Assumed to contain PawCare logic) -->
+    <script src="shared.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { poppins: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        cream: { 50:'#FFFDF9', 100:'#FFF8F0', 200:'#FFF0DE', 300:'#FFE4C4', 400:'#F5D6B8', 500:'#D4A574', 600:'#B8864E', 700:'#8B6B3E' },
+                        bark: { 50:'#FAF6F2', 100:'#F0E6D8', 200:'#E0D0BC', 300:'#C4A882', 400:'#8B7355', 500:'#6B5640', 600:'#3D2C2E', 700:'#2A1F20' },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+        body { font-family:'Poppins',sans-serif; background:#FFF8F0; color:#3D2C2E; overflow-x:hidden; }
+        
+        /* Design System Matching */
+        .card { background:#fff; border-radius:20px; border:1px solid #F0E6D8; box-shadow: 0 2px 16px rgba(139,107,62,.05); transition:all .3s; }
+        .card:hover { box-shadow:0 8px 32px rgba(139,107,62,.1); transform:translateY(-3px); }
+        
+        .btn-warm { background:linear-gradient(135deg,#D4A574,#C4956A); color:#fff; padding:12px 28px; border-radius:14px; font-weight:600; border:none; cursor:pointer; transition:all .3s; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(212,165,116,.3); }
+        .btn-warm:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(212,165,116,.4); }
+        
+        /* Animations */
+        .anim { opacity:0; transform:translateY(16px); transition:all .5s cubic-bezier(.4,0,.2,1); }
+        .anim.show { opacity:1; transform:translateY(0); }
+        
+        /* FAQ Accordion Transition */
+        .faq-content { transition: max-height 0.3s ease-out, opacity 0.3s ease; max-height: 0; opacity: 0; overflow: hidden; }
+        .faq-content.open { max-height: 200px; opacity: 1; }
+        .faq-icon { transition: transform 0.3s ease; }
+        .faq-item.active .faq-icon { transform: rotate(180deg); }
+        
+        /* Toast */
+        #toast { transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #toast.show { transform: translateY(0); }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- NAVBAR (Sticky) -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-bark-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 rounded-xl bg-cream-500 flex items-center justify-center transition-transform group-hover:scale-110">
+                        <svg viewBox="0 0 24 24" fill="#fff" class="w-5 h-5"><path d="M12 18.5c-2.5 0-4.5-1-6-3-.8-1.1-1.2-2.3-1.2-3.5C4.8 9.5 7 7 10 6.5c.5-2 2-3.5 4-3.5s3.5 1.5 4 3.5c3 .5 5.2 3 5.2 5.5 0 1.2-.4 2.4-1.2 3.5-1.5 2-3.5 3-6 3h-4z"/><circle cx="8" cy="5" r="1.8"/><circle cx="16" cy="5" r="1.8"/><circle cx="6" cy="8" r="1.5"/><circle cx="18" cy="8" r="1.5"/></svg>
+                    </div>
+                    <span class="text-base font-bold text-bark-600">PawCare</span>
+                </a>
+
+                <!-- Links -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="text-sm font-medium text-bark-400 hover:text-cream-600 transition-colors">Home</a>
+                    <a href="grooming.html" class="text-sm font-bold text-cream-600 transition-colors relative after:content-[''] after:absolute after:-bottom-[18px] after:left-0 after:w-full after:h-0.5 after:bg-cream-500">Grooming</a>
+                    <a href="shop.html" class="text-sm font-medium text-bark-400 hover:text-cream-600 transition-colors">Shop</a>
+                    <a href="dashboard.html" class="text-sm font-medium text-bark-400 hover:text-cream-600 transition-colors">Dashboard</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 text-bark-600"><i data-lucide="menu" class="w-6 h-6"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="py-10 lg:py-14 px-4 sm:px-6 bg-gradient-to-br from-cream-50 to-white">
+        <div class="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
+            <div class="flex-1 anim">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cream-100 border border-cream-200 mb-4">
+                    <span class="text-xs font-bold text-cream-600 uppercase tracking-wider">Premium Care</span>
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-extrabold text-bark-600 leading-tight mb-4">
+                    Pamper Your Pooch <br> <span class="text-cream-500">Like Royalty</span>
+                </h1>
+                <p class="text-bark-400 text-base mb-6 max-w-lg">
+                    Professional grooming services to keep your pet looking sharp, smelling fresh, and feeling their absolute best.
+                </p>
+                <button onclick="openBookingModal()" class="btn-warm text-base">
+                    Book Now <i data-lucide="calendar" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="flex-1 anim relative">
+                <div class="absolute -top-4 -right-4 w-24 h-24 bg-cream-200 rounded-full blur-2xl opacity-50"></div>
+                <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dog Grooming" class="rounded-3xl shadow-2xl w-full object-cover h-[350px] lg:h-[400px] border-4 border-white transform rotate-1 hover:rotate-0 transition-all duration-500">
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES GRID -->
+    <section class="py-10 lg:py-14 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10 anim">
+                <h2 class="text-3xl font-bold text-bark-600 mb-2">Our Grooming Services</h2>
+                <p class="text-bark-400">Choose the perfect package for your furry friend.</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <!-- Bath -->
+                <div class="card p-6 flex flex-col items-center text-center anim hover:bg-cream-50">
+                    <div class="w-14 h-14 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center text-2xl mb-3">🫧</div>
+                    <h3 class="font-bold text-bark-600 text-lg">Full Bath</h3>
+                    <p class="text-xs text-bark-400 mt-1 mb-3">Shampoo, rinse & blow dry</p>
+                    <div class="text-xl font-bold text-cream-600 mb-4">₹499</div>
+                    <button onclick="openBookingModal('Full Bath')" class="btn-warm w-full justify-center text-sm py-2">Book Now</button>
+                </div>
+
+                <!-- Haircut -->
+                <div class="card p-6 flex flex-col items-center text-center anim hover:bg-cream-50">
+                    <div class="w-14 h-14 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-2xl mb-3">✂️</div>
+                    <h3 class="font-bold text-bark-600 text-lg">Haircut</h3>
+                    <p class="text-xs text-bark-400 mt-1 mb-3">Styling & breed-specific cuts</p>
+                    <div class="text-xl font-bold text-cream-600 mb-4">₹699</div>
+                    <button onclick="openBookingModal('Haircut')" class="btn-warm w-full justify-center text-sm py-2">Book Now</button>
+                </div>
+
+                <!-- Nail Care -->
+                <div class="card p-6 flex flex-col items-center text-center anim hover:bg-cream-50">
+                    <div class="w-14 h-14 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center text-2xl mb-3">💅</div>
+                    <h3 class="font-bold text-bark-600 text-lg">Nail Care</h3>
+                    <p class="text-xs text-bark-400 mt-1 mb-3">Trimming, filing & grinding</p>
+                    <div class="text-xl font-bold text-cream-600 mb-4">₹299</div>
+                    <button onclick="openBookingModal('Nail Care')" class="btn-warm w-full justify-center text-sm py-2">Book Now</button>
+                </div>
+
+                <!-- Full Package -->
+                <div class="card p-6 flex flex-col items-center text-center relative overflow-hidden anim hover:bg-cream-50">
+                    <div class="absolute top-0 right-0 bg-cream-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">BEST VALUE</div>
+                    <div class="w-14 h-14 rounded-full bg-cream-100 text-cream-600 flex items-center justify-center text-2xl mb-3">✨</div>
+                    <h3 class="font-bold text-bark-600 text-lg">Full Package</h3>
+                    <p class="text-xs text-bark-400 mt-1 mb-3">Bath + Cut + Nails + Ears</p>
+                    <div class="text-xl font-bold text-cream-600 mb-4">₹1,299</div>
+                    <button onclick="openBookingModal('Full Package')" class="btn-warm w-full justify-center text-sm py-2">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="py-10 lg:py-14 px-4 sm:px-6 bg-white/50">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-10 anim">
+                <h2 class="text-3xl font-bold text-bark-600 mb-2">How It Works</h2>
+                <p class="text-bark-400">Simple steps to a happier pet.</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex-1 text-center anim">
+                    <div class="w-16 h-16 mx-auto bg-cream-100 rounded-full flex items-center justify-center text-cream-600 text-2xl mb-4 shadow-sm">
+                        <i data-lucide="calendar-check"></i>
+                    </div>
+                    <h3 class="font-bold text-bark-600 mb-1">1. Book Online</h3>
+                    <p class="text-sm text-bark-400">Select a service and a convenient time slot.</p>
+                </div>
+                <div class="hidden md:block w-24 h-1 border-b-2 border-dashed border-cream-300"></div>
+                <div class="flex-1 text-center anim">
+                    <div class="w-16 h-16 mx-auto bg-cream-100 rounded-full flex items-center justify-center text-cream-600 text-2xl mb-4 shadow-sm">
+                        <i data-lucide="scissors"></i>
+                    </div>
+                    <h3 class="font-bold text-bark-600 mb-1">2. Drop Off</h3>
+                    <p class="text-sm text-bark-400">Bring your pet to our spa on the scheduled day.</p>
+                </div>
+                <div class="hidden md:block w-24 h-1 border-b-2 border-dashed border-cream-300"></div>
+                <div class="flex-1 text-center anim">
+                    <div class="w-16 h-16 mx-auto bg-cream-100 rounded-full flex items-center justify-center text-cream-600 text-2xl mb-4 shadow-sm">
+                        <i data-lucide="smile"></i>
+                    </div>
+                    <h3 class="font-bold text-bark-600 mb-1">3. Pickup</h3>
+                    <p class="text-sm text-bark-400">Collect your clean, happy, and stylish pet!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GROOMER PROFILES -->
+    <section class="py-10 lg:py-14 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10 anim">
+                <h2 class="text-3xl font-bold text-bark-600 mb-2">Meet Our Groomers</h2>
+                <p class="text-bark-400">Certified professionals who love pets.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Groomer 1 -->
+                <div class="card p-6 text-center anim">
+                    <img src="https://picsum.photos/seed/groomer1/300/300" alt="Groomer" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-cream-100 object-cover">
+                    <h3 class="font-bold text-bark-600 text-lg">Jenny Wilson</h3>
+                    <p class="text-xs text-cream-600 font-semibold mb-2">Senior Stylist</p>
+                    <div class="flex justify-center text-yellow-400 text-sm mb-4">★★★★★</div>
+                    <p class="text-xs text-bark-400">10+ years experience with Poodles and Terriers.</p>
+                </div>
+                <!-- Groomer 2 -->
+                <div class="card p-6 text-center anim">
+                    <img src="https://picsum.photos/seed/groomer2/300/300" alt="Groomer" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-cream-100 object-cover">
+                    <h3 class="font-bold text-bark-600 text-lg">Robert Fox</h3>
+                    <p class="text-xs text-cream-600 font-semibold mb-2">Grooming Expert</p>
+                    <div class="flex justify-center text-yellow-400 text-sm mb-4">★★★★★</div>
+                    <p class="text-xs text-bark-400">Specializes in cat grooming and anxious pets.</p>
+                </div>
+                <!-- Groomer 3 -->
+                <div class="card p-6 text-center anim">
+                    <img src="https://picsum.photos/seed/groomer3/300/300" alt="Groomer" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-cream-100 object-cover">
+                    <h3 class="font-bold text-bark-600 text-lg">Esther Howard</h3>
+                    <p class="text-xs text-cream-600 font-semibold mb-2">Spa Therapist</p>
+                    <div class="flex justify-center text-yellow-400 text-sm mb-4">★★★★★</div>
+                    <p class="text-xs text-bark-400">Expert in therapeutic baths and skin care.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ ACCORDION -->
+    <section class="py-10 lg:py-14 px-4 sm:px-6 bg-white/50">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-8 anim">
+                <h2 class="text-3xl font-bold text-bark-600 mb-2">Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="space-y-3 anim">
+                <!-- FAQ 1 -->
+                <div class="card p-4 cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center font-bold text-bark-600">
+                        <span>How long does a grooming session take?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-bark-400"></i>
+                    </div>
+                    <div class="faq-content mt-2 text-sm text-bark-400">
+                        It typically takes 1-2 hours depending on the breed, size of the pet, and the service package selected.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="card p-4 cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center font-bold text-bark-600">
+                        <span>Do you handle aggressive or anxious dogs?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-bark-400"></i>
+                    </div>
+                    <div class="faq-content mt-2 text-sm text-bark-400">
+                        Yes, our staff is trained to handle anxious pets. We may schedule a longer appointment or a "meet and greet" first to ensure safety.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="card p-4 cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center font-bold text-bark-600">
+                        <span>What products do you use?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-bark-400"></i>
+                    </div>
+                    <div class="faq-content mt-2 text-sm text-bark-400">
+                        We use only premium, hypoallergenic, and eco-friendly shampoos and conditioners that are safe for your pet's skin.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="card p-4 cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center font-bold text-bark-600">
+                        <span>Should I vaccinate my pet before grooming?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-bark-400"></i>
+                    </div>
+                    <div class="faq-content mt-2 text-sm text-bark-400">
+                        Yes, we require up-to-date vaccinations (Rabies, Distemper) for all pets to ensure a safe environment for everyone.
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="card p-4 cursor-pointer faq-item" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center font-bold text-bark-600">
+                        <span>Can I stay and watch?</span>
+                        <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-bark-400"></i>
+                    </div>
+                    <div class="faq-content mt-2 text-sm text-bark-400">
+                        Due to space constraints and safety reasons, we generally do not allow owners to stay in the grooming area, but you are welcome to wait in our lobby.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-bark-600 text-white pt-14 pb-8 px-4 sm:px-6 mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            <div class="col-span-2 md:col-span-1">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 rounded-xl bg-cream-500 flex items-center justify-center">
+                        <svg viewBox="0 0 24 24" fill="#fff" class="w-5 h-5"><path d="M12 18.5c-2.5 0-4.5-1-6-3-.8-1.1-1.2-2.3-1.2-3.5C4.8 9.5 7 7 10 6.5c.5-2 2-3.5 4-3.5s3.5 1.5 4 3.5c3 .5 5.2 3 5.2 5.5 0 1.2-.4 2.4-1.2 3.5-1.5 2-3.5 3-6 3h-4z"/><circle cx="8" cy="5" r="1.8"/><circle cx="16" cy="5" r="1.8"/><circle cx="6" cy="8" r="1.5"/><circle cx="18" cy="8" r="1.5"/></svg>
+                    </div>
+                    <span class="text-lg font-bold">PawCare</span>
+                </div>
+                <p class="text-sm text-white/50">The best care for your best friend. Trusted by pet parents everywhere.</p>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold mb-4 text-white/80">Quick Links</h4>
+                <ul class="space-y-2 text-sm text-white/40">
+                    <li><a href="index.html" class="hover:text-cream-400">Home</a></li>
+                    <li><a href="grooming.html" class="hover:text-cream-400">Grooming</a></li>
+                    <li><a href="shop.html" class="hover:text-cream-400">Shop</a></li>
+                    <li><a href="dashboard.html" class="hover:text-cream-400">Dashboard</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold mb-4 text-white/80">Services</h4>
+                <ul class="space-y-2 text-sm text-white/40">
+                    <li><a href="#" class="hover:text-cream-400">Vet Consultation</a></li>
+                    <li><a href="#" class="hover:text-cream-400">Emergency Care</a></li>
+                    <li><a href="#" class="hover:text-cream-400">Pet Boarding</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold mb-4 text-white/80">Contact</h4>
+                <ul class="space-y-2 text-sm text-white/40">
+                    <li>hello@pawcare.com</li>
+                    <li>+1 (555) 123-4567</li>
+                </ul>
+            </div>
+        </div>
+        <div class="pt-8 border-t border-white/10 text-center text-xs text-white/30">
+            &copy; 2025 PawCare. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- BOOKING MODAL -->
+    <div id="booking-modal" class="fixed inset-0 z-50 bg-bark-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="card w-full max-w-md p-6 md:p-8 animate-fade-in relative">
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 p-2 hover:bg-cream-100 rounded-full text-bark-400 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-bark-600 mb-1">Book Grooming</h3>
+            <p class="text-sm text-bark-400 mb-6">Fill in the details to schedule an appointment.</p>
+            
+            <form onsubmit="handleGroomingBooking(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-bark-500 uppercase mb-1 block">Your Name</label>
+                    <input type="text" id="groom-name" required placeholder="John Doe" class="w-full bg-cream-50 border border-bark-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cream-500 transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-bark-500 uppercase mb-1 block">Pet Name</label>
+                    <input type="text" id="groom-pet" required placeholder="e.g. Max" class="w-full bg-cream-50 border border-bark-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cream-500 transition-colors">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-bark-500 uppercase mb-1 block">Service</label>
+                    <select id="groom-service" class="w-full bg-cream-50 border border-bark-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cream-500 transition-colors">
+                        <option value="Full Bath">Full Bath - ₹499</option>
+                        <option value="Haircut">Haircut - ₹699</option>
+                        <option value="Nail Care">Nail Care - ₹299</option>
+                        <option value="Full Package">Full Package - ₹1,299</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-bark-500 uppercase mb-1 block">Date</label>
+                        <input type="date" id="groom-date" required class="w-full bg-cream-50 border border-bark-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cream-500 transition-colors">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-bark-500 uppercase mb-1 block">Time</label>
+                        <input type="time" id="groom-time" required class="w-full bg-cream-50 border border-bark-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cream-500 transition-colors">
+                    </div>
+                </div>
+                <button type="submit" class="btn-warm w-full justify-center py-3 mt-2">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-bark-600 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span id="t-icon">🐾</span>
+        <span id="t-msg" class="font-medium text-sm"></span>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+
+        // Modal Logic
+        function openBookingModal(serviceName = '') {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if(serviceName) {
+                const select = document.getElementById('groom-service');
+                // Try to match option text or value
+                for(let i=0; i<select.options.length; i++) {
+                    if(select.options[i].value.includes(serviceName) || select.options[i].text.includes(serviceName)) {
+                        select.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function closeBookingModal() {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Close modal on outside click
+        document.getElementById('booking-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeBookingModal();
+        });
+
+        // FAQ Logic
+        function toggleFaq(element) {
+            const content = element.querySelector('.faq-content');
+            const isOpen = element.classList.contains('active');
+            
+            // Close all others (optional)
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('.faq-content').classList.remove('open');
+            });
+
+            if (!isOpen) {
+                element.classList.add('active');
+                content.classList.add('open');
+            }
+        }
+
+        // Booking Logic (Connects to Shared.js)
+        function handleGroomingBooking(e) {
+            e.preventDefault();
+            
+            const bookingData = {
+                type: 'grooming',
+                doctor: 'Grooming Team', // Or assign specific groomer
+                user: document.getElementById('groom-name').value,
+                pet: document.getElementById('groom-pet').value,
+                service: document.getElementById('groom-service').value,
+                date: document.getElementById('groom-date').value,
+                time: document.getElementById('groom-time').value,
+                status: 'pending',
+                id: Date.now()
+            };
+
+            // Check if PawCare object exists in shared.js
+            if (typeof PawCare !== 'undefined' && PawCare.saveBooking) {
+                PawCare.saveBooking(bookingData);
+            } else {
+                // Fallback for standalone testing
+                console.log("Shared.js not found. Saving to localStorage directly.");
+                const bookings = JSON.parse(localStorage.getItem('pc_bookings') || '[]');
+                bookings.push(bookingData);
+                localStorage.setItem('pc_bookings', JSON.stringify(bookings));
+            }
+
+            showToast('✅', 'Grooming appointment booked successfully!');
+            closeBookingModal();
+            e.target.reset();
+        }
+
+        // Toast Logic
+        function showToast(icon, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('t-icon').innerText = icon;
+            document.getElementById('t-msg').innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
